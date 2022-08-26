@@ -3,5 +3,9 @@
   "private": true,
   "devDependencies": {
     "normalize.css": "^8.0.1"
+  },
+  "dependencies": {
+    "jquery": "^3.6.0",
+    "lunr": "^2.3.9"
   }
 }

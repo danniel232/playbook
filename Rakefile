@@ -22,4 +22,13 @@ file './corpus.json' => ['./', *Rake::FileList['_guides/*.markdown', '_guides/*.
   end
 end
 
-task :default => ['./corpus.json']
+desc "Build search index from corpus"
+file './search_index.json' => ['./corpus.json'] do |t|
+  Open3.popen2('script/build-index') do |stdin, stdout, wt|
+     IO.copy_stream(t.source, stdin)
+     stdin.close
+     IO.copy_stream(stdout, t.name)
+  end
+end
+
+task :default => ['./corpus.json', './search_index.json']
