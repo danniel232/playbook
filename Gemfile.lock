@@ -18,6 +18,7 @@ GEM
     eventmachine (1.2.7)
     ffi (1.15.4)
     forwardable-extended (2.6.0)
+    front_matter_parser (1.0.1)
     google-protobuf (3.19.3)
     http_parser.rb (0.8.0)
     i18n (1.8.11)
@@ -39,6 +40,7 @@ GEM
       terminal-table (~> 2.0)
     jekyll-watch (2.2.1)
       listen (~> 3.0)
+    json (2.6.2)
     kramdown (2.3.1)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -58,6 +60,7 @@ GEM
       forwardable-extended (~> 2.6)
     public_suffix (4.0.6)
     racc (1.6.0)
+    rake (13.0.6)
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -77,9 +80,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  front_matter_parser
   jekyll (~> 4.2.1)
   jekyll-sass-converter!
+  json
   nokogiri
+  rake
   sass-embedded
 
 BUNDLED WITH

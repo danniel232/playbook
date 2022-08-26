@@ -1,6 +1,9 @@
 source "https://rubygems.org"
 
 gem "jekyll", "~> 4.2.1"
+gem "json"
+gem "rake"
+gem "front_matter_parser"
 
 # If you have any plugins, put them here!
 group :jekyll_plugins do
