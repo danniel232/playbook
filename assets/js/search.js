@@ -14,16 +14,30 @@ jQuery(function () {
       window.documents.push(doc);
     });
   });
+
   // Event when the form is submitted
-  $("#site_search").submit((event) => {
+  var searchBox = document.getElementById("site_search");
+  searchBox.addEventListener("submit", (event) => {
     event.preventDefault();
-    var query = $("#search_box").val(); // Get the value for the text field
+    var query = document.getElementById("search_box").value;
     window.index = lunr.Index.load(window.idx);
     var results = window.index.search(query); // Get lunr to perform a search
-    display_search_results(results); // Hand the results off to be displayed
+    display_search_results(results, query); // Hand the results off to be displayed
   });
 
-  var buildSearchResult = (doc) => {
+  const getExcerpt = (content, query) => {
+    const queryRegex = new RegExp(query, "i");
+    const searchIndex = content.search(queryRegex);
+    const queryLength = query.length;
+    const excerpt = content.slice(
+      searchIndex - 100,
+      searchIndex + queryLength + 100
+    );
+    
+    return excerpt.replace(queryRegex, "<em class='search-keyword'>$&</em>");
+  };
+
+  var buildSearchResult = (doc, query) => {
     var li = document.createElement("li"),
       article = document.createElement("article"),
       header = document.createElement("header"),
@@ -37,7 +51,11 @@ jQuery(function () {
     a.textContent = doc.name;
 
     p1.dataset.field = "content";
-    p1.textContent = doc.content;
+    // find the text matching the lines
+
+    const content = getExcerpt(doc.content, query);
+
+    p1.textContent = content;
     p1.style.textOverflow = "ellipsis";
     p1.style.overflow = "hidden";
     p1.style.whiteSpace = "nowrap";
@@ -52,14 +70,14 @@ jQuery(function () {
     return li;
   };
 
-  function display_search_results(results) {
+  function display_search_results(results, query) {
     var search_results = $("#search_results");
     if (results.length) {
       search_results.empty(); // Clear any old results
 
       results.forEach(function (result) {
         var item = window.documents.filter((doc) => doc.id === result.ref);
-        var li = buildSearchResult(item[0]); // Build a snippet of HTML for this result
+        var li = buildSearchResult(item[0], query); // Build a snippet of HTML for this result
         Object.keys(result.matchData.metadata).forEach(function (term) {
           Object.keys(result.matchData.metadata[term]).forEach(function (
             fieldName
